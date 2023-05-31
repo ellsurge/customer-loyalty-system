@@ -41,11 +41,11 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
+    id           String     @id @default(cuid())
+    sessionToken String     @unique
     userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -56,12 +56,62 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    items         Item[]
+    points        Int       @default(0)
+    Role          Role      @default(USER)
+    gift          Gift[]
+    transactions   Transactions[]
+    staff           Staff[]
+}
+model Staff{
+    id              String      @id @default(cuid())
+    user              User      @relation(fields: [userId], references: [id])  
+    userId          String     
+    transactions    Transactions[]
 }
 
+model Item {
+    id            String    @id @default(cuid())
+    name          String?
+    point         Int?
+    user          User      @relation(fields: [userId], references: [id])
+    userId        String
+    price         Int
+    gift          Gift[]
+    transaction     Transactions[]
+
+}
+model Currency {
+    id            Int       @id @default(autoincrement())
+    name          String 
+    points        Float
+}
+model Gift {
+    id              String  @id @default(cuid())
+    item            Item    @relation(fields: [itemId],references: [id])
+    itemId          String
+    user            User    @relation(fields: [userId], references: [id])
+    userId          String
+}
+model Transactions {
+    id              String  @id @default(cuid())
+    cashier         Staff    @relation(fields: [cashierId], references: [id])
+    cashierId       String
+    User            User    @relation(fields: [userId], references: [id])
+    userId          String
+    item            Item  @relation(fields: [itemId], references: [id])
+    itemId          String
+}
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+    identifier    String
+    token         String   @unique
+    expires       DateTime
 
     @@unique([identifier, token])
+}
+
+enum Role {
+    USER
+    ADMIN
+    CASHIER
 }
