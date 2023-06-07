@@ -1,13 +1,10 @@
 import { Box, Center, Container, HStack, Link, Text } from "@chakra-ui/react"
 
-interface NavBarProp{
-    auth :React.ReactNode
-}
 
-export default function NavBar({auth}:NavBarProp){
+export default function NavBar(){
     return (
         <Box 
-        bg="#160A01"
+        bg="#160A01" 
         color="#ffffff"
         height="100%"
         p={4}
@@ -18,7 +15,7 @@ export default function NavBar({auth}:NavBarProp){
                 <Link>home</Link>
                 <Link></Link>
                 <Link></Link>
-                {auth?`<Link>signup</Link>`:''}
+                {/* {auth?`<Link>signup</Link>`:''} */}
            </Center>
            </HStack>
 
