@@ -9,7 +9,7 @@ export const userRouter = router({
     .mutation( async (opts)=>{
         return await opts.ctx.prisma.item.delete({
             where: { id: opts.input.userId}
-        })
+        }) || []
         
     }),
 
@@ -27,7 +27,7 @@ export const userRouter = router({
                     }
                 },
             }
-        })
+        }) || []
     }),
     fetch: publicProcedure
     .input(z.object({id:z.string()}))
@@ -36,15 +36,7 @@ export const userRouter = router({
             where:{
                 id: input.id
 
-            },
-            // include:{
-            //     shipping: true,
-            //     transactions: {
-            //         select:{
-            //             total:true
-            //         }
-            //     },
-            // }
-        })
+            }
+        }) || [];
     }),
 })

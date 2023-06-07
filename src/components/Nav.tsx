@@ -3,8 +3,14 @@ import { Box, VStack, Text, List, ListItem, Stack, Link, Spacer } from "@chakra-
 import NextLink from "next/link";
 import { InferGetStaticPropsType, GetStaticProps } from "next";
 
+interface LinkItem {
+  id: number;
+  label: string;
+  link: string;
+  children?: LinkItem[];
+}
 
-const links =    [
+const links: LinkItem[] =    [
     {
       id: 1,
       label: "home",
@@ -39,24 +45,25 @@ const links =    [
       ],
     },
   ];
-function NestedList({ items }) {
-  return (
-    <List>
-      {items.map((item) => (
-        <ListItem key={item.id} fontWeight={'black'} p={2} fontSize={'xl'}>
-          <Link as={NextLink} href={`/admin/${item.link}`}>
-            {item.label}
-          </Link>
-          {item.children && (
-            <Stack pl={6} mt={1} spacing={1}>
-              <NestedList items={item.children} />
-            </Stack>
-          )}
-        </ListItem>
-      ))}
-    </List>
-  );
-}
+
+  function NestedList({ items }: { items: LinkItem[] }) {
+    return (
+      <List>
+        {items.map((item) => (
+          <ListItem key={item.id} fontWeight="black" p={2} fontSize="xl">
+            <Link as={NextLink} href={`/admin/${item.link}`}>
+              {item.label}
+            </Link>
+            {item.children && (
+              <Stack pl={6} mt={1} spacing={1}>
+                <NestedList items={item.children} />
+              </Stack>
+            )}
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
 
 export default function Nav() {
   if (!links ) {

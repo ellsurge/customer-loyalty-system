@@ -12,15 +12,21 @@ import { Form } from "react-hook-form";
 import Layout from "@/components/Layout";
 import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
+import { Item } from "@prisma/client";
 
+interface CartItem {
+  item: Item; 
+  quantity: number; 
+  total: number; 
+  id: string; 
+}
 const Home: NextPage = () => {
   const uid = 'clij5whpt0000j20mvuqksnc6'
   const data = null;
   const user  =  api.users.fetch.useQuery({id:uid})
   const cart = api.orders.getCart.useQuery({id:uid})
   const citm = api.orders.cancel.useMutation()
-
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartList, setListItems] = useState('');
   const [subtotal, setSubtotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -35,14 +41,15 @@ const Home: NextPage = () => {
     useEffect(()=>{
         if(!user.isLoading && user.isSuccess){
             console.log('getting user...')
-            setPoints(user.data.points)
+            setPoints(user.data!.points)
         }
 
     },[user] )
     useEffect(()=>{
         if(!cart.isLoading && cart.isSuccess){
             console.log('updating cart...')
-            setCartItems(cart.data);
+            // @ts-ignore
+            setCartItems(cart.data as any[]);
             setItemNum(cartItems.length);
         }
     }, [cart]);
@@ -53,18 +60,22 @@ const Home: NextPage = () => {
   useEffect(()=>{
     calculateAmmount()
   }, [grandTotal, upt])
-  
+
   useEffect(()=>{
     const cl = cartItems.map((c)=>(
+        // @ts-ignore
         <Box as="tr" key={c.id} m={10}>
-            <Td fontWeight={'bold'}>{c.item.name}</Td>
+            
+            <Td fontWeight={'bold'}>{c.item?.name}</Td>
             <Td fontWeight={'bold'}>{c.quantity}</Td>
             <Td>${c.total}</Td>
             <Td> <Button onClick={() =>remove(c.id)} variant={'ghost'} size={'sm'}><DeleteIcon></DeleteIcon> remove</Button></Td>
         </Box>
     ))
-    setListItems(cl)
-  }, [cartItems])
+    // @ts-ignore
+    setListItems(cl);
+  }, [cartItems]);
+
   useEffect(()=>{
         calculateGrandTotal();
   }, [discount, subtotal])
@@ -84,7 +95,7 @@ const Home: NextPage = () => {
       </HStack>
     );
   }
-  
+  // @ts-ignore
   const remove = async (id)=>{
     console.log('removing---',id)
     citm.mutateAsync({id:id})
@@ -120,6 +131,7 @@ const Home: NextPage = () => {
   const handleCheckboxChange = () => {
     setIv(!iv);
   };
+  // @ts-ignore
   const checkPoints = (pt)=>{
     if(pt<points){
         setUpt(pt)

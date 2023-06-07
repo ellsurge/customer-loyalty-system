@@ -20,7 +20,7 @@ export const ordersRouter = router({
                     },
                 },
             },
-        });
+        }) || [];
       }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.transactions.findMany({
@@ -31,10 +31,10 @@ export const ordersRouter = router({
                 },
             },
         },
-    });
+    }) || [];
   }),
   getCat: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.category.findMany();
+    return ctx.prisma.category.findMany() || [];
   }),
   create: publicProcedure
     .input(OrderAddSchema)
@@ -63,7 +63,7 @@ export const ordersRouter = router({
         },
       });
 
-      return order;
+      return order || [];
     }),
   addCat: publicProcedure
     .input(CatAddSchema)
@@ -86,6 +86,6 @@ export const ordersRouter = router({
         data: {
           status:'CANCELED'
         },
-      });
+      }) || [];
     }),
 });

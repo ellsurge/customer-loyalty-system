@@ -12,6 +12,7 @@ import { colors } from "./_app";
 const Home: NextPage = () => {
   const data = null;
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // @ts-ignore
   const { data: user } =  api.auth.create.useMutation(data);
 
 

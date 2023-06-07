@@ -9,22 +9,22 @@ import {z} from 'zod'
 export default function Login(){
     const { onOpen, onClose}  = useDisclosure()
     const isOpen = true;
-    async function loginAction(formData:FormData){
-        try{
-            const data = LoginReqSchema.parse(formData);
-            const token = await api.auth.login.useQuery(data)
-            console.log(token);
+    // async function loginAction(formData:FormData){
+    //     try{
+    //         const data = LoginReqSchema.parse(formData);
+    //         const token = await api.auth.login.useQuery(data)
+    //         console.log(token);
 
-        }catch (error){
-            if (error instanceof z.ZodError) {
-                const formattedErrors = error.flatten();
-                console.log(formattedErrors);
-              } else {
-                console.log(error);
-              }
+    //     }catch (error){
+    //         if (error instanceof z.ZodError) {
+    //             const formattedErrors = error.flatten();
+    //             console.log(formattedErrors);
+    //           } else {
+    //             console.log(error);
+    //           }
 
-        }
-    }
+    //     }
+    // }
     return(
 
         <Layout>
@@ -33,7 +33,7 @@ export default function Login(){
             onClose={onClose}
             size="sm"
             >
-            <form action={loginAction}>
+            <form action="../user/cart" >
                 {/* <ModalOverlay/> */}
                 <ModalContent
                 bg="#FFF4EC"
