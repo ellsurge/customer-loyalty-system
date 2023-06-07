@@ -1,18 +1,23 @@
-import {NavBar} from './NavBar';
-import {Footer} from './Footer';
+import { Grid , GridItem} from '@chakra-ui/react';
+import NavBar from './NavBar';
+import Footer from './Footer';
+// import React from 'react';
 
-export const Layout = ({children})=>{
+interface LayoutProps{
+    children: React.ReactNode;
+}
+export default function Layout ({children}:LayoutProps){
 
     return(
         <Grid 
             templateAreas={`"navbar" "body" "footer"`}
-            gridTemplateRows={'200px 1fr 150px'}
+            gridTemplateRows={'50px 1fr 25px'}
             h = '100vh'
         >
-            <GridItem bg="red" area="navbar">{NavBar}</GridItem>
-            <GridItem bg="red" area="body">{children}</GridItem>
-            <GridItem bg="red" area="footer">{Footer}</GridItem>
-            <
+            <GridItem  area="navbar"><NavBar></NavBar></GridItem>
+            <GridItem  area="body">{children}</GridItem>
+            <GridItem  area="footer"><Footer/></GridItem>
+            
         </Grid>
 
     )

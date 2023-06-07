@@ -1,7 +1,7 @@
 import z from 'zod'
 import { router , protectedProcedure, publicProcedure} from '../trpc'
 
-const userRouter = router({
+export const userRouter = router({
     delete: protectedProcedure
     .input(z.object({
         userId: z.string()
@@ -13,9 +13,38 @@ const userRouter = router({
         
     }),
 
-    getAll: protectedProcedure
+    getAll: publicProcedure
     .query(({ctx})=>{
-        return ctx.prisma.user.findMany()
+        return ctx.prisma.user.findMany({
+            where:{
+                Role:"USER"
+            },
+            include:{
+                shipping: true,
+                transactions: {
+                    select:{
+                        total:true
+                    }
+                },
+            }
+        })
     }),
+    fetch: publicProcedure
+    .input(z.object({id:z.string()}))
+    .query(({ctx, input})=>{
+        return ctx.prisma.user.findUnique({
+            where:{
+                id: input.id
 
+            },
+            // include:{
+            //     shipping: true,
+            //     transactions: {
+            //         select:{
+            //             total:true
+            //         }
+            //     },
+            // }
+        })
+    }),
 })

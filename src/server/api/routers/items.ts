@@ -1,27 +1,43 @@
 import {z} from 'zod'
-import {router, protectedProcedure} from "../trpc";
+import {router, protectedProcedure, publicProcedure} from "../trpc";
+import { ItemAddSchema } from '@/utils/dto';
 
 export const itemsRouter = router({
     
-    getAll: protectedProcedure
+    getAll: publicProcedure
     .query(({ ctx }) => {
         return ctx.prisma.item.findMany({
-            where:{
-                userId: ctx.session.user.id,
+            include:{
+                transaction:true,
+                category:true,
+
             }
         });
       }),
-
-    create: protectedProcedure
+    find:publicProcedure
     .input(z.object({
-        name:z.string(),
-    }))
+        id: z.string()
+    })).
+    mutation(async({ctx, input}) =>{
+        const item = await ctx.prisma.item.findUnique({
+            where: {
+              id: input.id,
+            },
+            include: {
+              category: {
+                select:{
+                    point:true,
+                }
+              }
+            },
+          });
+          return item
+    }),
+    create: publicProcedure
+    .input(ItemAddSchema)
     .mutation(( {ctx, input})=>{
         return ctx.prisma.item.create({
-            data: {
-                name: input.name,
-                userId: ctx.session.user.id,
-            }
+            data: input
         })
 
     })
