@@ -67,7 +67,7 @@ const links: LinkItem[] =    [
 
 export default function Nav() {
   if (!links ) {
-    return "loading..."; // or return a loading state if desired
+    return <Text>"loading..."</Text>; // or return a loading state if desired
   }
   
   return (
