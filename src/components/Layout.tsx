@@ -14,7 +14,7 @@ export default function Layout ({children}:LayoutProps){
             gridTemplateRows={'50px 1fr 25px'}
             h = '100vh'
         >
-            <GridItem  area="navbar"><NavBar auth={''}></NavBar></GridItem>
+            <GridItem  area="navbar"><NavBar ></NavBar></GridItem>
             <GridItem  area="body">{children}</GridItem>
             <GridItem  area="footer"><Footer/></GridItem>
             
