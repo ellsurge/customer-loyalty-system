@@ -40,7 +40,7 @@ export default function Add() {
     console.log(userData);
 
     try {
-      const { data: user } = await api.auth.create.useMutation(userData);
+      const { data: user } = await api.userAuth.create.useMutation();
       console.log(user);
     } catch (error) {
       console.log("--------", error);
