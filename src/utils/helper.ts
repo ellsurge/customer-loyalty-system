@@ -1,19 +1,20 @@
 import { useRouter } from "next/router";
 
-const getRoute = ()=>{
-    const router  = useRouter();
-    const currentUri = router.asPath;
-    const out = currentUri.split('/').filter(Boolean)
-    const breadcrumbItems = out.map((part, index) => ({
-        label: part,
-        path: out.slice(0, index + 1).join('/'),
-      }));
-    // console.log(breadcrumbItems);
-    return breadcrumbItems;
+interface BreadcrumbItem {
+  label: string;
+  path: string;
 }
 
+const getRoute = (): BreadcrumbItem[] => {
+  const router = useRouter();
+  const currentUri: string = router.asPath;
+  const out: string[] = currentUri.split('/').filter(Boolean);
+  const breadcrumbItems: BreadcrumbItem[] = out.map((part, index) => ({
+    label: part,
+    path: out.slice(0, index + 1).join('/'),
+  }));
 
-
-
+  return breadcrumbItems;
+};
 
 export default getRoute;
