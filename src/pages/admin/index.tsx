@@ -1,17 +1,38 @@
 import Structure from "@/components/Structure";
 import { Button, Flex, FormControl, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { colors } from "@/pages/_app";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { UsersAddSchema } from "@/utils/dto";
 import { api } from "@/utils/api";
 
+interface UserData {
+  role: string;
+  fname: string;
+  lname: string;
+  name: string;
+  email: string;
+  password: string;
+  country: string;
+  province: string;
+  address: string;
+}
+
 export default function Add() {
-  const { handleSubmit, register, formState: { errors } } = useForm({
+  const { handleSubmit, register, formState: { errors } } = useForm<UserData>({
     defaultValues: {
-      role: "USER"
+      role: "USER",
+      fname: "",
+      lname: "",
+      name: "",
+      email: "",
+      password: "",
+      country: "",
+      province: "",
+      address: "",
     }
   });
-  const onSubmit = async (data) => {
+
+  const onSubmit: SubmitHandler<UserData> = async (data) => {
     data.role = "USER";
     data.name = `${data.fname} ${data.lname}`;
 
@@ -19,7 +40,7 @@ export default function Add() {
     console.log(userData);
 
     try {
-      const { data: user } = await api.auth.create.useMutation(data);
+      const { data: user } = await api.auth.create.useMutation(userData);
       console.log(user);
     } catch (error) {
       console.log("--------", error);
@@ -44,6 +65,14 @@ export default function Add() {
                 borderRadius={0}
                 borderColor={colors.dark}
                 {...register("fname", { required: true })}
+              />
+              <Input
+                placeholder="Role"
+                type="text"
+                border="1px"
+                borderRadius={0}
+                borderColor={colors.dark}
+                {...register("role", { required: true })}
               />
               <Input
                 placeholder="Last Name"
