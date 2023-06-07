@@ -1,5 +1,5 @@
 import { colors } from "@/pages/_app";
-import getRoute from "@/utils/helper";
+import GetRoute from "@/utils/helper";
 import { Search2Icon } from "@chakra-ui/icons";
 import { Avatar, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Input, InputGroup, InputRightAddon, InputRightElement, Spacer, Stack, VStack,} from "@chakra-ui/react";
 import {signIn, signOut, useSession} from "next-auth/react"
@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export const Header =() =>{
     const {data: sessionData} = useSession();
-    const currenrtUrl = getRoute;
+    const currenrtUrl = GetRoute;
     // console.log(currenrtUrl());
 
 

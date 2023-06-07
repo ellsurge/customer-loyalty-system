@@ -5,7 +5,7 @@ interface BreadcrumbItem {
   path: string;
 }
 
-const getRoute = (): BreadcrumbItem[] => {
+const GetRoute = (): BreadcrumbItem[] => {
   const router = useRouter();
   const currentUri: string = router.asPath;
   const out: string[] = currentUri.split('/').filter(Boolean);
@@ -17,4 +17,4 @@ const getRoute = (): BreadcrumbItem[] => {
   return breadcrumbItems;
 };
 
-export default getRoute;
+export default GetRoute;
